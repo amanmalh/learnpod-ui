@@ -1,7 +1,7 @@
 import { Formik, Field, ErrorMessage, Form } from "formik";
 import * as Yup from "yup";
 import { useMutation, useQueryClient } from "react-query";
-import { postGoal } from "./utils/api-utils";
+import { postGoal } from "../../utils/api-utils";
 
 const NewGoal = () => {
   const client = useQueryClient();

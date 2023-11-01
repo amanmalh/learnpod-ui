@@ -1,5 +1,5 @@
 import React from "react";
-import { getGroups } from "./utils/api-utils";
+import { getGroups } from "../../utils/api-utils";
 import { useQuery } from "react-query";
 
 const Groups = () => {

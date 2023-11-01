@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { getGoal } from "./utils/api-utils";
+import { getGoal } from "../../utils/api-utils";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 

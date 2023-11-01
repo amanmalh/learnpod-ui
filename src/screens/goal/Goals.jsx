@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useQuery } from "react-query";
-import { getGoals } from "./utils/api-utils";
+import { getGoals } from "../../utils/api-utils";
 import { useNavigate } from "react-router-dom";
 import NewGoal from "./NewGoal";
 

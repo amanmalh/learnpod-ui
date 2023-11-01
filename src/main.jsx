@@ -3,11 +3,11 @@ import ReactDOM from "react-dom/client";
 import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
-import Goal from "./Goal";
-import Goals from "./Goals";
-import Header from "./common/Header";
+import Goal from "./screens/goal/Goal";
+import Goals from "./screens/goal/Goals";
+import Header from "./screens/common/Header";
 import "./index.css";
-import Groups from "./Groups";
+import Groups from "./screens/group/Groups";
 
 const queryClient = new QueryClient();
 
