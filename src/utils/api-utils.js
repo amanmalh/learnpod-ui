@@ -49,3 +49,8 @@ export const getTasks = async (topicId) => {
     }
   ]
 }
+
+export const postGoal = async (body) => {
+  const goal = await axios.post(`${URL}/goals`, {data: body})
+  return goal.data.data
+}

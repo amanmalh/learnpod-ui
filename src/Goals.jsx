@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useQuery } from "react-query";
 import { getGoals } from "./utils/api-utils";
 import { useNavigate } from "react-router-dom";
+import NewGoal from "./NewGoal";
 
 const Goals = () => {
   const navigate = useNavigate();
@@ -10,7 +11,12 @@ const Goals = () => {
 
   const openGoal = (goalId) => {
     return () => {
-      navigate(`/goal/${goalId}`);
+      console.log(`Opening goal: ${goalId}`);
+      try {
+        navigate(`/goal/${goalId}`);
+      } catch (e) {
+        console.log(e);
+      }
     };
   };
 
@@ -44,28 +50,7 @@ const Goals = () => {
         </div>
       )}
 
-      <dialog id="create-goal-modal" className="modal">
-        <div className="modal-box">
-          <h3 className="font-bold text-xl">New Goal</h3>
-          <div className="pt-4 pb-4">
-            <input
-              type="text"
-              placeholder="Goal title"
-              className="input w-full input-bordered input-md"
-            />
-            <textarea
-              className="textarea textarea-bordered w-full mt-3 h-24"
-              placeholder="Bio"
-            ></textarea>
-          </div>
-          <div className="modal-action">
-            <form method="dialog">
-              {/* if there is a button in form, it will close the modal */}
-              <button className="btn">Create</button>
-            </form>
-          </div>
-        </div>
-      </dialog>
+      <NewGoal />
     </>
   );
 };
