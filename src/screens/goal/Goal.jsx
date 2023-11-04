@@ -23,7 +23,7 @@ const Goal = () => {
     setShowTaskPanel(false);
   };
 
-  const handleEditGoalDialogClick = () => {
+  const editClickHandler = () => {
     document.getElementById("edit-goal-modal").showModal();
   };
 
@@ -44,7 +44,7 @@ const Goal = () => {
                     className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
                   >
                     <li>
-                      <span onClick={handleEditGoalDialogClick}>Edit</span>
+                      <span onClick={editClickHandler}>Edit</span>
                     </li>
                     <li>
                       <span className="text-red-600">Delete</span>
