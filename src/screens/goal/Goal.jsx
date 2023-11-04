@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import { getGoal } from "../../utils/api-utils";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
+import EditGoalDialog from "./EditGoalDialog";
 
 const Goal = () => {
   const [showTaskPanel, setShowTaskPanel] = useState(false);
+  const [showEditDialog, setShowEditDialog] = useState(false);
+
   const { id } = useParams();
   const query = useQuery(["goal", id, true], getGoal);
 
@@ -20,26 +23,28 @@ const Goal = () => {
     setShowTaskPanel(false);
   };
 
+  const handleEditGoalDialogClick = () => {
+    document.getElementById("edit-goal-modal").showModal();
+  };
+
   return (
     <>
       {query.isSuccess && (
         <div className="flex">
           <div className={`${showTaskPanel ? "basis-3/5" : "basis-full"}`}>
             <div className="flex justify-between">
-              <h1 className="text-2xl" contenteditable="true">
-                {query.data.attributes.title}
-              </h1>
+              <h1 className="text-2xl">{query.data.attributes.title}</h1>
               <span className="cursor-pointer">
                 <div className="dropdown dropdown-end">
                   <label tabIndex={0} className="cursor-pointer">
-                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                    <i className="fa-solid fa-ellipsis-vertical"></i>
                   </label>
                   <ul
                     tabIndex={0}
                     className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
                   >
                     <li>
-                      <span>Edit</span>
+                      <span onClick={handleEditGoalDialogClick}>Edit</span>
                     </li>
                     <li>
                       <span className="text-red-600">Delete</span>
@@ -130,6 +135,7 @@ const Goal = () => {
             <h3 className="text-lg mt-2">Pending Tasks</h3>
             <h3 className="text-lg mt-2">Completed Tasks</h3>
           </div>
+          <EditGoalDialog existingGoal={query.data} />
         </div>
       )}
     </>

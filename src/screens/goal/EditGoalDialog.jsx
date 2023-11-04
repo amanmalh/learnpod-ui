@@ -1,24 +1,43 @@
 import { Formik, Field, ErrorMessage, Form } from "formik";
 import * as Yup from "yup";
 import { useMutation, useQueryClient } from "react-query";
-import { postGoal } from "../../utils/api-utils";
+import { postGoal, putGoal } from "../../utils/api-utils";
 
-const NewGoal = () => {
+const EditGoal = ({ existingGoal }) => {
   const client = useQueryClient();
 
-  const mutation = useMutation(postGoal, {
+  const postMutation = useMutation(postGoal, {
     onSuccess: () => {
       client.invalidateQueries(["goals"]);
+      document.getElementById("edit-goal-modal").close();
     },
   });
-  const initialValues = {
+
+  const putMutation = useMutation(putGoal, {
+    onSuccess: () => {
+      client.invalidateQueries(["goals"]);
+      client.invalidateQueries(["goal"]);
+      document.getElementById("edit-goal-modal").close();
+    },
+  });
+
+  let initialValues = {
     title: "",
     description: "",
   };
 
-  const handleSubmit = (values) => {
-    mutation.mutate(values);
-    document.getElementById("create-goal-modal").close();
+  if (existingGoal) {
+    const { title, description } = existingGoal.attributes;
+    initialValues = { title, description };
+  }
+
+  const handleSubmit = (values, { resetForm }) => {
+    if (existingGoal) {
+      putMutation.mutate({ id: existingGoal.id, body: values });
+    } else {
+      postMutation.mutate(values);
+      resetForm();
+    }
   };
 
   const validationSchema = Yup.object({
@@ -34,7 +53,7 @@ const NewGoal = () => {
   });
 
   return (
-    <dialog id="create-goal-modal" className="modal">
+    <dialog id="edit-goal-modal" className="modal">
       <div className="modal-box">
         <h3 className="font-bold text-xl">New Goal</h3>
         <Formik
@@ -71,10 +90,13 @@ const NewGoal = () => {
               <div className="modal-action">
                 <button
                   type="submit"
-                  disabled={mutation.isLoading}
+                  disabled={postMutation.isLoading || putMutation.isLoading}
                   className="btn"
                 >
-                  Create
+                  {(putMutation.isLoading || postMutation.isLoading) && (
+                    <span class="loading loading-spinner text-primary"></span>
+                  )}
+                  Save
                 </button>
               </div>
             </Form>
@@ -85,4 +107,4 @@ const NewGoal = () => {
   );
 };
 
-export default NewGoal;
+export default EditGoal;

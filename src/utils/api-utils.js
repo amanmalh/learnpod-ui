@@ -54,3 +54,8 @@ export const postGoal = async (body) => {
   const goal = await axios.post(`${URL}/goals`, {data: body})
   return goal.data.data
 }
+
+export const putGoal = async ({id, body}) => {
+  const goal = await axios.put(`${URL}/goals/${id}`, {data: body})
+  return goal.data.data
+}
