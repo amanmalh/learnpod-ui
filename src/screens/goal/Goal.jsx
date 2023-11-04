@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { getGoal } from "../../utils/api-utils";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
+import ConfirmDeleteDialog from "./ConfirmDeleteDialog";
 import EditGoalDialog from "./EditGoalDialog";
 
 const Goal = () => {
@@ -23,6 +24,9 @@ const Goal = () => {
     setShowTaskPanel(false);
   };
 
+  const deleteClickHandler = () => {
+    document.getElementById("confirm-delete-goal").showModal();
+    
   const editClickHandler = () => {
     document.getElementById("edit-goal-modal").showModal();
   };
@@ -46,7 +50,7 @@ const Goal = () => {
                     <li>
                       <span onClick={editClickHandler}>Edit</span>
                     </li>
-                    <li>
+                    <li onClick={deleteClickHandler}>
                       <span className="text-red-600">Delete</span>
                     </li>
                   </ul>
@@ -112,7 +116,6 @@ const Goal = () => {
                 </div>
                 <div className="modal-action">
                   <form method="dialog">
-                    {/* if there is a button in form, it will close the modal */}
                     <button className="btn">Add</button>
                   </form>
                 </div>
@@ -135,6 +138,11 @@ const Goal = () => {
             <h3 className="text-lg mt-2">Pending Tasks</h3>
             <h3 className="text-lg mt-2">Completed Tasks</h3>
           </div>
+          
+          <ConfirmDeleteDialog
+            id={query.data.id}
+            goalTitle={query.data.attributes.title}
+          />
           <EditGoalDialog existingGoal={query.data} />
         </div>
       )}
