@@ -54,3 +54,8 @@ export const postGoal = async (body) => {
   const goal = await axios.post(`${URL}/goals`, {data: body})
   return goal.data.data
 }
+
+export const deleteGoal = async (id) => {
+  const goal = await axios.delete(`${URL}/goals/${id}`)
+  return goal.data.data
+}
