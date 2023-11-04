@@ -25,10 +25,7 @@ const Goal = () => {
       {query.isSuccess && (
         <div className="flex">
           <div className={`${showTaskPanel ? "basis-3/5" : "basis-full"}`}>
-            <h1 className="text-2xl">
-              {query.data.attributes.title}{" "}
-              <span className="badge badge-primary">goal</span>
-            </h1>
+            <h1 className="text-2xl">{query.data.attributes.title}</h1>
             <p className="mt-2">{query.data.attributes.description}</p>
             <h2 className="text-xl mt-3">Topics</h2>
 
@@ -59,31 +56,17 @@ const Goal = () => {
                 query.data.attributes.topics.data.map((topic) => (
                   <div
                     key={topic.id}
-                    className="bg-neutral-100 p-3 rounded-md hover:bg-neutral-200 text-slate-600	mt-2 cursor-pointer flex justify-between"
+                    className="bg-neutral-100 p-3 rounded-md hover:bg-neutral-200 text-slate-600 mt-2 cursor-pointer flex justify-between"
                     onClick={topicClickHandler}
                   >
                     <span>{topic.attributes.title}</span>
-                    <div>
-                      {topic.attributes.owner.data.attributes.username ===
-                        "amanmalh" && (
-                        <span className="badge badge-secondary badge-outline">
-                          owner
-                        </span>
-                      )}
-                      {topic.attributes.owner.data.attributes.username !==
-                        "amanmalh" && (
-                        <span className="badge badge-accent badge-outline">
-                          participant
-                        </span>
-                      )}
-                      <span className="badge badge-accent badge-outline ml-2">
-                        {topic.attributes.status}
-                      </span>
-                    </div>
                   </div>
                 ))}
             </div>
-            <button className="btn btn-primary" onClick={addTopicClickHandler}>
+            <button
+              className="btn btn-primary mt-2"
+              onClick={addTopicClickHandler}
+            >
               Add topic
             </button>
             <dialog id="create-topic-modal" className="modal">
