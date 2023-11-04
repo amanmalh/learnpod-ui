@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useQuery } from "react-query";
 import { getGoals } from "../../utils/api-utils";
 import { useNavigate } from "react-router-dom";
-import NewGoal from "./NewGoal";
+import EditGoalDialog from "./EditGoalDialog";
 
 const Goals = () => {
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ const Goals = () => {
   };
 
   const handleNewGoalClick = () => {
-    document.getElementById("create-goal-modal").showModal();
+    document.getElementById("edit-goal-modal").showModal();
   };
 
   return (
@@ -50,7 +50,7 @@ const Goals = () => {
         </div>
       )}
 
-      <NewGoal />
+      <EditGoalDialog />
     </>
   );
 };
