@@ -25,7 +25,29 @@ const Goal = () => {
       {query.isSuccess && (
         <div className="flex">
           <div className={`${showTaskPanel ? "basis-3/5" : "basis-full"}`}>
-            <h1 className="text-2xl">{query.data.attributes.title}</h1>
+            <div className="flex justify-between">
+              <h1 className="text-2xl" contenteditable="true">
+                {query.data.attributes.title}
+              </h1>
+              <span className="cursor-pointer">
+                <div className="dropdown dropdown-end">
+                  <label tabIndex={0} className="cursor-pointer">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                  </label>
+                  <ul
+                    tabIndex={0}
+                    className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
+                  >
+                    <li>
+                      <span>Edit</span>
+                    </li>
+                    <li>
+                      <span className="text-red-600">Delete</span>
+                    </li>
+                  </ul>
+                </div>
+              </span>
+            </div>
             <p className="mt-2">{query.data.attributes.description}</p>
             <h2 className="text-xl mt-3">Topics</h2>
 
