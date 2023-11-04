@@ -11,12 +11,7 @@ const Goals = () => {
 
   const openGoal = (goalId) => {
     return () => {
-      console.log(`Opening goal: ${goalId}`);
-      try {
-        navigate(`/goal/${goalId}`);
-      } catch (e) {
-        console.log(e);
-      }
+      navigate(`/goal/${goalId}`);
     };
   };
 

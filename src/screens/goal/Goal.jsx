@@ -7,7 +7,6 @@ import EditGoalDialog from "./EditGoalDialog";
 
 const Goal = () => {
   const [showTaskPanel, setShowTaskPanel] = useState(false);
-  const [showEditDialog, setShowEditDialog] = useState(false);
 
   const { id } = useParams();
   const query = useQuery(["goal", id, true], getGoal);
@@ -26,7 +25,8 @@ const Goal = () => {
 
   const deleteClickHandler = () => {
     document.getElementById("confirm-delete-goal").showModal();
-    
+  };
+
   const editClickHandler = () => {
     document.getElementById("edit-goal-modal").showModal();
   };
@@ -138,7 +138,7 @@ const Goal = () => {
             <h3 className="text-lg mt-2">Pending Tasks</h3>
             <h3 className="text-lg mt-2">Completed Tasks</h3>
           </div>
-          
+
           <ConfirmDeleteDialog
             id={query.data.id}
             goalTitle={query.data.attributes.title}

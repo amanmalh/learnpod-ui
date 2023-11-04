@@ -94,7 +94,7 @@ const EditGoal = ({ existingGoal }) => {
                   className="btn"
                 >
                   {(putMutation.isLoading || postMutation.isLoading) && (
-                    <span class="loading loading-spinner text-primary"></span>
+                    <span className="loading loading-spinner text-primary"></span>
                   )}
                   Save
                 </button>
