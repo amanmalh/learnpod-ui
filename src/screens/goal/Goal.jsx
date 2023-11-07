@@ -4,31 +4,47 @@ import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import ConfirmDeleteDialog from "./ConfirmDeleteDialog";
 import EditGoalDialog from "./EditGoalDialog";
+import EditTopicDialog from "../topic/EditTopicDialog";
+import GoalSideBar from "./GoalSideBar";
+import ConfirmDeleteTopicDialog from "../topic/ConfirmDeleteTopicDialog";
 
 const Goal = () => {
   const [showTaskPanel, setShowTaskPanel] = useState(false);
+  const [selectedTopic, setSelectedTopic] = useState(null);
 
   const { id } = useParams();
   const query = useQuery(["goal", id, true], getGoal);
 
   const addTopicClickHandler = () => {
-    document.getElementById("create-topic-modal").showModal();
+    setSelectedTopic(null);
+    document.getElementById("edit-topic-modal").showModal();
   };
 
-  const topicClickHandler = () => {
-    setShowTaskPanel(true);
+  const topicClickHandler = (topic) => {
+    return () => {
+      setShowTaskPanel(true);
+      setSelectedTopic(topic);
+    };
   };
 
   const closeTasksHandler = () => {
     setShowTaskPanel(false);
   };
 
-  const deleteClickHandler = () => {
+  const deleteGoalClickHandler = () => {
     document.getElementById("confirm-delete-goal").showModal();
   };
 
-  const editClickHandler = () => {
+  const editGoalClickHandler = () => {
     document.getElementById("edit-goal-modal").showModal();
+  };
+
+  const editTopicClickHandler = () => {
+    document.getElementById("edit-topic-modal").showModal();
+  };
+
+  const deleteTopicClickHandler = () => {
+    document.getElementById("confirm-delete-topic").showModal();
   };
 
   return (
@@ -48,9 +64,9 @@ const Goal = () => {
                     className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
                   >
                     <li>
-                      <span onClick={editClickHandler}>Edit</span>
+                      <span onClick={editGoalClickHandler}>Edit</span>
                     </li>
-                    <li onClick={deleteClickHandler}>
+                    <li onClick={deleteGoalClickHandler}>
                       <span className="text-red-600">Delete</span>
                     </li>
                   </ul>
@@ -88,7 +104,7 @@ const Goal = () => {
                   <div
                     key={topic.id}
                     className="bg-neutral-100 p-3 rounded-md hover:bg-neutral-200 text-slate-600 mt-2 cursor-pointer flex justify-between"
-                    onClick={topicClickHandler}
+                    onClick={topicClickHandler(topic)}
                   >
                     <span>{topic.attributes.title}</span>
                   </div>
@@ -100,50 +116,31 @@ const Goal = () => {
             >
               Add topic
             </button>
-            <dialog id="create-topic-modal" className="modal">
-              <div className="modal-box">
-                <h3 className="font-bold text-xl">Add Topic</h3>
-                <div className="pt-4 pb-4">
-                  <input
-                    type="text"
-                    placeholder="Title"
-                    className="input w-full input-bordered input-md"
-                  />
-                  <textarea
-                    className="textarea textarea-bordered w-full mt-3 h-24"
-                    placeholder="Description"
-                  ></textarea>
-                </div>
-                <div className="modal-action">
-                  <form method="dialog">
-                    <button className="btn">Add</button>
-                  </form>
-                </div>
-              </div>
-            </dialog>
           </div>
           {showTaskPanel && (
-            <div className="divider lg:divider-horizontal"></div>
+            <>
+              <div className="divider lg:divider-horizontal"></div>
+              <div className="basis-2/5">
+                <GoalSideBar
+                  topic={selectedTopic}
+                  closeTasksHandler={closeTasksHandler}
+                  editTopicClickHandler={editTopicClickHandler}
+                  deleteTopicClickHandler={deleteTopicClickHandler}
+                />
+              </div>
+            </>
           )}
-          <div className={`h-screen ${showTaskPanel ? "basis-2/5" : "hidden"}`}>
-            <div className="flex justify-between">
-              <h2 className="text-2xl">Tasks</h2>
-              <button
-                className="btn btn-sm btn-circle"
-                onClick={closeTasksHandler}
-              >
-                ✕
-              </button>
-            </div>
-            <h3 className="text-lg mt-2">Pending Tasks</h3>
-            <h3 className="text-lg mt-2">Completed Tasks</h3>
-          </div>
 
           <ConfirmDeleteDialog
             id={query.data.id}
             goalTitle={query.data.attributes.title}
           />
           <EditGoalDialog existingGoal={query.data} />
+          <EditTopicDialog
+            goalId={query.data.id}
+            existingTopic={selectedTopic}
+          />
+          <ConfirmDeleteTopicDialog id={selectedTopic && selectedTopic.id} />
         </div>
       )}
     </>

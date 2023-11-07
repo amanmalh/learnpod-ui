@@ -1,23 +1,23 @@
 import { Formik, Field, ErrorMessage, Form } from "formik";
 import * as Yup from "yup";
 import { useMutation, useQueryClient } from "react-query";
-import { postGoal, putGoal } from "../../utils/api-utils";
+import { postTopic, putTopic } from "../../utils/api-utils";
 
-const EditGoal = ({ existingGoal }) => {
+const EditTopicDialog = ({ goalId, existingTopic }) => {
   const client = useQueryClient();
 
-  const postMutation = useMutation(postGoal, {
+  const postMutation = useMutation(postTopic, {
     onSuccess: () => {
-      client.invalidateQueries(["goals"]);
-      document.getElementById("edit-goal-modal").close();
+      client.invalidateQueries(["goal"]);
+      document.getElementById("edit-topic-modal").close();
     },
   });
 
-  const putMutation = useMutation(putGoal, {
+  const putMutation = useMutation(putTopic, {
     onSuccess: () => {
-      client.invalidateQueries(["goals"]);
       client.invalidateQueries(["goal"]);
-      document.getElementById("edit-goal-modal").close();
+
+      document.getElementById("edit-topic-modal").close();
     },
   });
 
@@ -26,40 +26,43 @@ const EditGoal = ({ existingGoal }) => {
     description: "",
   };
 
-  if (existingGoal) {
-    const { title, description } = existingGoal.attributes;
+  if (existingTopic) {
+    const { title, description } = existingTopic.attributes;
     initialValues = { title, description };
   }
 
   const handleSubmit = (values, { resetForm }) => {
-    if (existingGoal) {
-      putMutation.mutate({ id: existingGoal.id, body: values });
+    if (existingTopic) {
+      putMutation.mutate({ id: existingTopic.id, body: values });
     } else {
-      postMutation.mutate(values);
+      postMutation.mutate({ goalId, topic: values });
       resetForm();
     }
   };
 
   const validationSchema = Yup.object({
     title: Yup.string()
-      .required("Goal must have a title")
+      .required("Topic must have a title")
       .min(5, "Title must have at least 5 characters")
       .max(50, "Title can have at most 20 characters"),
 
     description: Yup.string()
-      .required("Goal must have bio")
+      .required("Topic must have bio")
       .min(5, "Bio must have at least 5 characters")
       .max(300, "Bio can have at most 300 characters"),
   });
 
   return (
-    <dialog id="edit-goal-modal" className="modal">
+    <dialog id="edit-topic-modal" className="modal">
       <div className="modal-box">
-        <h3 className="font-bold text-xl">New Goal</h3>
+        <h3 className="font-bold text-xl">
+          {existingTopic ? "Edit Topic" : "New Topic"}
+        </h3>
         <Formik
           initialValues={initialValues}
           onSubmit={handleSubmit}
           validationSchema={validationSchema}
+          enableReinitialize={true}
         >
           {(formik) => (
             <Form>
@@ -67,7 +70,7 @@ const EditGoal = ({ existingGoal }) => {
                 <Field
                   name="title"
                   type="text"
-                  placeholder="Goal title"
+                  placeholder="Title"
                   className="input w-full input-bordered input-md"
                 />
                 <ErrorMessage
@@ -78,7 +81,7 @@ const EditGoal = ({ existingGoal }) => {
                 <Field
                   name="description"
                   as="textarea"
-                  placeholder="Bio"
+                  placeholder="Description"
                   className="textarea textarea-bordered w-full mt-3 h-24"
                 />
                 <ErrorMessage
@@ -107,4 +110,4 @@ const EditGoal = ({ existingGoal }) => {
   );
 };
 
-export default EditGoal;
+export default EditTopicDialog;
