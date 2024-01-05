@@ -7,6 +7,7 @@ import EditGoalDialog from "./EditGoalDialog";
 import EditTopicDialog from "../topic/EditTopicDialog";
 import GoalSideBar from "./GoalSideBar";
 import ConfirmDeleteTopicDialog from "../topic/ConfirmDeleteTopicDialog";
+import WarningIcon from "../common/WarningIcon";
 
 const Goal = () => {
   const [showTaskPanel, setShowTaskPanel] = useState(false);
@@ -22,6 +23,7 @@ const Goal = () => {
 
   const topicClickHandler = (topic) => {
     return () => {
+      console.log(topic);
       setShowTaskPanel(true);
       setSelectedTopic(topic);
     };
@@ -79,19 +81,7 @@ const Goal = () => {
             {(!query.data.attributes.topics ||
               query.data.attributes.topics.data.length === 0) && (
               <div className="alert mt-3">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="stroke-current shrink-0 h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                  />
-                </svg>
+                <WarningIcon />
                 <span>
                   No topics present. Click on the below button to add one!
                 </span>
@@ -119,8 +109,8 @@ const Goal = () => {
           </div>
           {showTaskPanel && (
             <>
-              <div className="divider lg:divider-horizontal"></div>
-              <div className="basis-2/5">
+              {/* <div className="divider lg:divider-horizontal"></div> */}
+              <div className="basis-2/5 ml-10 shadow-xl p-10">
                 <GoalSideBar
                   topic={selectedTopic}
                   closeTasksHandler={closeTasksHandler}

@@ -1,4 +1,5 @@
 import React from "react";
+import WarningIcon from "../common/WarningIcon";
 
 export default function GoalSideBar({
   topic,
@@ -39,8 +40,31 @@ export default function GoalSideBar({
             </button>
           </div>
         </div>
-        <h3 className="text-lg mt-2">Pending Tasks</h3>
-        <h3 className="text-lg mt-2">Completed Tasks</h3>
+        {topic.attributes.tasks.data.length === 0 && (
+          <div className="alert mt-3">
+            <WarningIcon />
+            <span>No tasks present. Click on the below button to add one!</span>
+          </div>
+        )}
+        {topic.attributes.tasks.data.map((task) => (
+          <div
+            key={topic.id}
+            className="bg-neutral-100 p-3 rounded-md hover:bg-neutral-200 text-slate-600 mt-2 cursor-pointer flex justify-between"
+            onClick={() => {}}
+          >
+            <div className="flex">
+              <input
+                type="checkbox"
+                name={task.attributes.title}
+                className="checkbox checkbox-primary"
+              />
+              <span className="ml-2">{task.attributes.title}</span>
+            </div>
+          </div>
+        ))}
+        <button className="btn btn-default mt-2" onClick={() => {}}>
+          Add task
+        </button>
       </div>
     </>
   );

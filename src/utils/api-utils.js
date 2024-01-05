@@ -6,7 +6,9 @@ export const getGoal = async ({ queryKey }) => {
   const [key, goalId, includeTopics] = queryKey;
   let url = `${URL}/goals/${goalId}`;
   if (includeTopics) {
-    url = url + "?populate[topics][populate][0]=owner";
+    url =
+      url +
+      "?populate[topics][populate][0]=tasks&populate[topics][populate][1]=owner";
   }
   const goal = await axios.get(url);
 
