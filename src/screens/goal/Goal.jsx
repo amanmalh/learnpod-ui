@@ -21,7 +21,7 @@ import DeleteGoalDialog from "./DeleteGoalDialog";
 import EditGoalDialog from "./EditGoalDialog";
 import EditTopicDialog from "../topic/EditTopicDialog";
 import GoalSideBar from "./GoalSideBar";
-import ConfirmDeleteTopicDialog from "../topic/ConfirmDeleteTopicDialog";
+import DeleteTopicDialog from "../topic/DeleteTopicDialog";
 
 const Goal = () => {
   const [showTaskPanel, setShowTaskPanel] = useState(false);
@@ -29,6 +29,7 @@ const Goal = () => {
   const [isEditTopicDialogOpen, setIsEditTopicDialogOpen] = useState(false);
   const [isDeleteGoalDialogOpen, setIsDeleteGoalDialogOpen] = useState(false);
   const [isEditGoalDialogOpen, setIsEditGoalDialogOpen] = useState(false);
+  const [isDeleteTopicDialogOpen, setIsDeleteTopicDialogOpen] = useState(true);
 
   const { id } = useParams();
   const query = useQuery(["goal", id, true], getGoal);
@@ -58,7 +59,7 @@ const Goal = () => {
   };
 
   const deleteTopicClickHandler = () => {
-    document.getElementById("confirm-delete-topic").showModal();
+    setIsDeleteTopicDialogOpen(true);
   };
 
   return (
@@ -148,7 +149,11 @@ const Goal = () => {
             isOpen={isEditTopicDialogOpen}
             setIsOpen={setIsEditTopicDialogOpen}
           />
-          <ConfirmDeleteTopicDialog id={selectedTopic && selectedTopic.id} />
+          <DeleteTopicDialog
+            id={selectedTopic && selectedTopic.id}
+            isOpen={isDeleteTopicDialogOpen}
+            setIsOpen={setIsDeleteTopicDialogOpen}
+          />
           {selectedTopic && (
             <GoalSideBar
               topic={selectedTopic}

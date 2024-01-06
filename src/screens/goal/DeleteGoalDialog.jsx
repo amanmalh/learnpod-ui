@@ -59,7 +59,7 @@ const DeleteGoalDialog = ({ id, goalTitle, isOpen, setIsOpen }) => {
         >
           <Form>
             <ModalBody>
-              <Text py="4">
+              <Text>
                 Warning! This will permanently remove this goal. If you still
                 wish to proceed, please type the name of the goal in the below
                 input.
