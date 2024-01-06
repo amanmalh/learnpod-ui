@@ -4,12 +4,14 @@ import { Flex, Button, Spacer, Text } from "@chakra-ui/react";
 import { getGoals } from "../../utils/api-utils";
 import EditGoalDialog from "./EditGoalDialog";
 import GoalItem from "./GoalItem";
+import { useState } from "react";
 
 const Goals = () => {
   const goals = useQuery(["goals"], getGoals);
+  const [isEditGoalDialogOpen, setIsEditGoalDialogOpen] = useState(false);
 
   const handleNewGoalClick = () => {
-    document.getElementById("edit-goal-modal").showModal();
+    setIsEditGoalDialogOpen(true);
   };
 
   return (
@@ -35,7 +37,10 @@ const Goals = () => {
         </div>
       )}
 
-      <EditGoalDialog />
+      <EditGoalDialog
+        isOpen={isEditGoalDialogOpen}
+        setIsOpen={setIsEditGoalDialogOpen}
+      />
     </>
   );
 };
