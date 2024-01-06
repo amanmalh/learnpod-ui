@@ -36,7 +36,7 @@ const Goal = () => {
 
   const addTopicClickHandler = () => {
     setSelectedTopic(null);
-    document.getElementById("edit-topic-modal").showModal();
+    setIsEditTopicDialogOpen(true);
   };
 
   const topicClickHandler = (topic) => {

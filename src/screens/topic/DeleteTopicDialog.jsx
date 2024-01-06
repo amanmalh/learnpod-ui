@@ -17,7 +17,7 @@ const DeleteTopicDialog = ({ id, isOpen, setIsOpen }) => {
   const client = useQueryClient();
   const deleteMutation = useMutation(deleteTopic, {
     onSuccess: () => {
-      document.getElementById("confirm-delete-topic").close();
+      setIsOpen(false);
       client.invalidateQueries(["goal"]);
     },
   });
