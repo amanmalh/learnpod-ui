@@ -45,10 +45,6 @@ const Goal = () => {
     };
   };
 
-  const closeTasksHandler = () => {
-    setShowTaskPanel(false);
-  };
-
   const deleteGoalClickHandler = () => {
     setIsDeleteGoalDialogOpen(true);
   };
@@ -58,7 +54,6 @@ const Goal = () => {
   };
 
   const editTopicClickHandler = () => {
-    //document.getElementById("edit-topic-modal").showModal();
     setIsEditTopicDialogOpen(true);
   };
 
@@ -69,8 +64,8 @@ const Goal = () => {
   return (
     <>
       {query.isSuccess && (
-        <div className="flex">
-          <div className={`${showTaskPanel ? "basis-3/5" : "basis-full"}`}>
+        <>
+          <>
             <Flex>
               <Text as="h1" fontSize="2xl">
                 {query.data.attributes.title}
@@ -134,19 +129,7 @@ const Goal = () => {
             <Button mt="3" colorScheme="purple" onClick={addTopicClickHandler}>
               Add topic
             </Button>
-          </div>
-          {showTaskPanel && (
-            <>
-              <div className="basis-2/5 ml-10 shadow-xl p-10">
-                <GoalSideBar
-                  topic={selectedTopic}
-                  closeTasksHandler={closeTasksHandler}
-                  editTopicClickHandler={editTopicClickHandler}
-                  deleteTopicClickHandler={deleteTopicClickHandler}
-                />
-              </div>
-            </>
-          )}
+          </>
 
           <DeleteGoalDialog
             id={query.data.id}
@@ -166,7 +149,16 @@ const Goal = () => {
             setIsOpen={setIsEditTopicDialogOpen}
           />
           <ConfirmDeleteTopicDialog id={selectedTopic && selectedTopic.id} />
-        </div>
+          {selectedTopic && (
+            <GoalSideBar
+              topic={selectedTopic}
+              editTopicClickHandler={editTopicClickHandler}
+              deleteTopicClickHandler={deleteTopicClickHandler}
+              isOpen={showTaskPanel}
+              setIsOpen={setShowTaskPanel}
+            />
+          )}
+        </>
       )}
     </>
   );
