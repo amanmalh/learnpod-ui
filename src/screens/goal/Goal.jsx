@@ -1,4 +1,19 @@
 import React, { useState } from "react";
+import {
+  Flex,
+  Box,
+  Button,
+  Spacer,
+  Alert,
+  AlertIcon,
+  Icon,
+  Text,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+} from "@chakra-ui/react";
+import { FaEllipsisV } from "react-icons/fa";
 import { getGoal } from "../../utils/api-utils";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
@@ -12,6 +27,10 @@ import WarningIcon from "../common/WarningIcon";
 const Goal = () => {
   const [showTaskPanel, setShowTaskPanel] = useState(false);
   const [selectedTopic, setSelectedTopic] = useState(null);
+  const [isEditTopicDialogOpen, setIsEditTopicDialogOpen] = useState(false);
+  const [isConfirmDeleteDialogOpen, setIsConfirmDeleteDialogOpen] =
+    useState(false);
+  const [isEditGoalDialogOpen, setIsEditGoalDialogOpen] = useState(false);
 
   const { id } = useParams();
   const query = useQuery(["goal", id, true], getGoal);
@@ -54,62 +73,64 @@ const Goal = () => {
       {query.isSuccess && (
         <div className="flex">
           <div className={`${showTaskPanel ? "basis-3/5" : "basis-full"}`}>
-            <div className="flex justify-between">
-              <h1 className="text-2xl">{query.data.attributes.title}</h1>
-              <span className="cursor-pointer">
-                <div className="dropdown dropdown-end">
-                  <label tabIndex={0} className="cursor-pointer">
-                    <i className="fa-solid fa-ellipsis-vertical"></i>
-                  </label>
-                  <ul
-                    tabIndex={0}
-                    className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
-                  >
-                    <li>
-                      <span onClick={editGoalClickHandler}>Edit</span>
-                    </li>
-                    <li onClick={deleteGoalClickHandler}>
-                      <span className="text-red-600">Delete</span>
-                    </li>
-                  </ul>
-                </div>
-              </span>
-            </div>
-            <p className="mt-2">{query.data.attributes.description}</p>
-            <h2 className="text-xl mt-3">Topics</h2>
+            <Flex>
+              <Text as="h1" fontSize="2xl">
+                {query.data.attributes.title}
+              </Text>
+              <Spacer />
+              <Menu>
+                <MenuButton>
+                  <Icon as={FaEllipsisV} />
+                </MenuButton>
+                <MenuList>
+                  <MenuItem>
+                    <span onClick={editGoalClickHandler}>Edit</span>
+                  </MenuItem>
+                  <MenuItem>
+                    <Text color="tomato">Delete</Text>
+                  </MenuItem>
+                </MenuList>
+              </Menu>
+            </Flex>
+
+            <Text mt="2">{query.data.attributes.description}</Text>
+            <Text as="h2" fontSize="xl" mt="3">
+              Topics
+            </Text>
 
             {(!query.data.attributes.topics ||
               query.data.attributes.topics.data.length === 0) && (
-              <div className="alert mt-3">
-                <WarningIcon />
-                <span>
+              <Box mt="3">
+                <Alert status="info">
+                  <AlertIcon />
                   No topics present. Click on the below button to add one!
-                </span>
-              </div>
+                </Alert>
+              </Box>
             )}
 
-            <div className="mt-3">
+            <Box mt="3">
               {query.data.attributes.topics &&
                 query.data.attributes.topics.data.map((topic) => (
-                  <div
+                  <Box
                     key={topic.id}
-                    className="bg-neutral-100 p-3 rounded-md hover:bg-neutral-200 text-slate-600 mt-2 cursor-pointer flex justify-between"
                     onClick={topicClickHandler(topic)}
+                    bgColor="gray.50"
+                    mt="2"
+                    p="3"
+                    rounded="md"
+                    cursor="pointer"
+                    _hover={{ bgColor: "gray.100" }}
                   >
                     <span>{topic.attributes.title}</span>
-                  </div>
+                  </Box>
                 ))}
-            </div>
-            <button
-              className="btn btn-primary mt-2"
-              onClick={addTopicClickHandler}
-            >
+            </Box>
+            <Button mt="3" colorScheme="purple" onClick={addTopicClickHandler}>
               Add topic
-            </button>
+            </Button>
           </div>
           {showTaskPanel && (
             <>
-              {/* <div className="divider lg:divider-horizontal"></div> */}
               <div className="basis-2/5 ml-10 shadow-xl p-10">
                 <GoalSideBar
                   topic={selectedTopic}
