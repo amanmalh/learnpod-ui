@@ -10,7 +10,14 @@ export default function GoalItem({ goal }) {
     };
   };
   return (
-    <Box rounded="md" boxShadow="xl" p="8">
+    <Box
+      rounded="md"
+      boxShadow="xl"
+      p="8"
+      minHeight="300px"
+      h="300px"
+      overflow="ellipsis"
+    >
       <Button onClick={openGoal(goal.id)}>{goal.attributes.title}</Button>
       <Text mt="2">{goal.attributes.description}</Text>
     </Box>

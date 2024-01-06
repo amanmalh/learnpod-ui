@@ -8,7 +8,7 @@ import Goals from "./screens/goal/Goals";
 import Header from "./screens/common/Header";
 import "./index.css";
 import Groups from "./screens/group/Groups";
-import { ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, Container } from "@chakra-ui/react";
 
 const queryClient = new QueryClient();
 
@@ -16,9 +16,9 @@ const Layout = () => {
   return (
     <>
       <Header />
-      <div className="container mx-auto">
+      <Container maxW="8xl">
         <Outlet />
-      </div>
+      </Container>
     </>
   );
 };
