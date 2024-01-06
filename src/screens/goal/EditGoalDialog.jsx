@@ -33,7 +33,7 @@ const EditGoal = ({ existingGoal, isOpen, setIsOpen }) => {
     onSuccess: () => {
       client.invalidateQueries(["goals"]);
       client.invalidateQueries(["goal"]);
-      document.getElementById("edit-goal-modal").close();
+      setIsOpen(false);
     },
   });
 

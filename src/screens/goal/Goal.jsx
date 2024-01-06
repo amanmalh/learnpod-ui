@@ -17,19 +17,17 @@ import { FaEllipsisV } from "react-icons/fa";
 import { getGoal } from "../../utils/api-utils";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
-import ConfirmDeleteDialog from "./ConfirmDeleteDialog";
+import DeleteGoalDialog from "./DeleteGoalDialog";
 import EditGoalDialog from "./EditGoalDialog";
 import EditTopicDialog from "../topic/EditTopicDialog";
 import GoalSideBar from "./GoalSideBar";
 import ConfirmDeleteTopicDialog from "../topic/ConfirmDeleteTopicDialog";
-import WarningIcon from "../common/WarningIcon";
 
 const Goal = () => {
   const [showTaskPanel, setShowTaskPanel] = useState(false);
   const [selectedTopic, setSelectedTopic] = useState(null);
   const [isEditTopicDialogOpen, setIsEditTopicDialogOpen] = useState(false);
-  const [isConfirmDeleteDialogOpen, setIsConfirmDeleteDialogOpen] =
-    useState(false);
+  const [isDeleteGoalDialogOpen, setIsDeleteGoalDialogOpen] = useState(false);
   const [isEditGoalDialogOpen, setIsEditGoalDialogOpen] = useState(false);
 
   const { id } = useParams();
@@ -42,7 +40,6 @@ const Goal = () => {
 
   const topicClickHandler = (topic) => {
     return () => {
-      console.log(topic);
       setShowTaskPanel(true);
       setSelectedTopic(topic);
     };
@@ -53,11 +50,11 @@ const Goal = () => {
   };
 
   const deleteGoalClickHandler = () => {
-    document.getElementById("confirm-delete-goal").showModal();
+    setIsDeleteGoalDialogOpen(true);
   };
 
   const editGoalClickHandler = () => {
-    document.getElementById("edit-goal-modal").showModal();
+    setIsEditGoalDialogOpen(true);
   };
 
   const editTopicClickHandler = () => {
@@ -84,10 +81,18 @@ const Goal = () => {
                 </MenuButton>
                 <MenuList>
                   <MenuItem>
-                    <span onClick={editGoalClickHandler}>Edit</span>
+                    <Text w="100%" onClick={editGoalClickHandler}>
+                      Edit
+                    </Text>
                   </MenuItem>
                   <MenuItem>
-                    <Text color="tomato">Delete</Text>
+                    <Text
+                      w="100%"
+                      color="tomato"
+                      onClick={deleteGoalClickHandler}
+                    >
+                      Delete
+                    </Text>
                   </MenuItem>
                 </MenuList>
               </Menu>
@@ -142,11 +147,17 @@ const Goal = () => {
             </>
           )}
 
-          <ConfirmDeleteDialog
+          <DeleteGoalDialog
             id={query.data.id}
             goalTitle={query.data.attributes.title}
+            isOpen={isDeleteGoalDialogOpen}
+            setIsOpen={setIsDeleteGoalDialogOpen}
           />
-          <EditGoalDialog existingGoal={query.data} />
+          <EditGoalDialog
+            isOpen={isEditGoalDialogOpen}
+            setIsOpen={setIsEditGoalDialogOpen}
+            existingGoal={query.data}
+          />
           <EditTopicDialog
             goalId={query.data.id}
             existingTopic={selectedTopic}
