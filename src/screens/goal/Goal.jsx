@@ -58,7 +58,8 @@ const Goal = () => {
   };
 
   const editTopicClickHandler = () => {
-    document.getElementById("edit-topic-modal").showModal();
+    //document.getElementById("edit-topic-modal").showModal();
+    setIsEditTopicDialogOpen(true);
   };
 
   const deleteTopicClickHandler = () => {
@@ -161,6 +162,8 @@ const Goal = () => {
           <EditTopicDialog
             goalId={query.data.id}
             existingTopic={selectedTopic}
+            isOpen={isEditTopicDialogOpen}
+            setIsOpen={setIsEditTopicDialogOpen}
           />
           <ConfirmDeleteTopicDialog id={selectedTopic && selectedTopic.id} />
         </div>
