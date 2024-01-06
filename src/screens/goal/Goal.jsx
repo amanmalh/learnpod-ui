@@ -29,7 +29,7 @@ const Goal = () => {
   const [isEditTopicDialogOpen, setIsEditTopicDialogOpen] = useState(false);
   const [isDeleteGoalDialogOpen, setIsDeleteGoalDialogOpen] = useState(false);
   const [isEditGoalDialogOpen, setIsEditGoalDialogOpen] = useState(false);
-  const [isDeleteTopicDialogOpen, setIsDeleteTopicDialogOpen] = useState(true);
+  const [isDeleteTopicDialogOpen, setIsDeleteTopicDialogOpen] = useState(false);
 
   const { id } = useParams();
   const query = useQuery(["goal", id, true], getGoal);
