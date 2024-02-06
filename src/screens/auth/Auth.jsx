@@ -33,4 +33,4 @@ function useAuth() {
   return useContext(AuthContext);
 }
 
-export { ProtectedRoutes, useAuth, AuthProvider };
+export { useAuth, AuthProvider };
