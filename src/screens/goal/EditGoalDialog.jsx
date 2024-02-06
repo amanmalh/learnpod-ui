@@ -1,15 +1,31 @@
-import { Formik, Field, ErrorMessage, Form } from "formik";
-import * as Yup from "yup";
+import { Formik, Field, Form } from "formik";
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  Input,
+  Button,
+  Textarea,
+  Box,
+  FormErrorMessage,
+  FormControl,
+  FormLabel,
+} from "@chakra-ui/react";
 import { useMutation, useQueryClient } from "react-query";
 import { postGoal, putGoal } from "../../utils/api-utils";
+import { editGoalValidationSchema } from "../../utils/validationSchemas";
 
-const EditGoal = ({ existingGoal }) => {
+const EditGoal = ({ existingGoal, isOpen, setIsOpen }) => {
   const client = useQueryClient();
 
   const postMutation = useMutation(postGoal, {
     onSuccess: () => {
       client.invalidateQueries(["goals"]);
-      document.getElementById("edit-goal-modal").close();
+      setIsOpen(false);
     },
   });
 
@@ -17,7 +33,7 @@ const EditGoal = ({ existingGoal }) => {
     onSuccess: () => {
       client.invalidateQueries(["goals"]);
       client.invalidateQueries(["goal"]);
-      document.getElementById("edit-goal-modal").close();
+      setIsOpen(false);
     },
   });
 
@@ -40,70 +56,69 @@ const EditGoal = ({ existingGoal }) => {
     }
   };
 
-  const validationSchema = Yup.object({
-    title: Yup.string()
-      .required("Goal must have a title")
-      .min(5, "Title must have at least 5 characters")
-      .max(50, "Title can have at most 20 characters"),
-
-    description: Yup.string()
-      .required("Goal must have bio")
-      .min(5, "Bio must have at least 5 characters")
-      .max(300, "Bio can have at most 300 characters"),
-  });
-
   return (
-    <dialog id="edit-goal-modal" className="modal">
-      <div className="modal-box">
-        <h3 className="font-bold text-xl">New Goal</h3>
+    <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>New Goal</ModalHeader>
+        <ModalCloseButton />
         <Formik
           initialValues={initialValues}
           onSubmit={handleSubmit}
-          validationSchema={validationSchema}
+          validationSchema={editGoalValidationSchema}
         >
-          {(formik) => (
-            <Form>
-              <div className="pt-4 pb-4">
-                <Field
-                  name="title"
-                  type="text"
-                  placeholder="Goal title"
-                  className="input w-full input-bordered input-md"
-                />
-                <ErrorMessage
-                  component="span"
-                  name="title"
-                  className="text-sm text-red-500"
-                />
-                <Field
-                  name="description"
-                  as="textarea"
-                  placeholder="Bio"
-                  className="textarea textarea-bordered w-full mt-3 h-24"
-                />
-                <ErrorMessage
-                  component="span"
-                  name="description"
-                  className="text-sm text-red-500"
-                />
-              </div>
-              <div className="modal-action">
-                <button
-                  type="submit"
-                  disabled={postMutation.isLoading || putMutation.isLoading}
-                  className="btn"
-                >
-                  {(putMutation.isLoading || postMutation.isLoading) && (
-                    <span className="loading loading-spinner text-primary"></span>
-                  )}
-                  Save
-                </button>
-              </div>
-            </Form>
-          )}
+          <Form>
+            <ModalBody>
+              <Box>
+                <Box>
+                  <Field name="title" type="text">
+                    {({ field, form }) => (
+                      <FormControl
+                        isInvalid={form.errors.title && form.touched.title}
+                      >
+                        <FormLabel>Title</FormLabel>
+                        <Input {...field} />
+                        <FormErrorMessage>{form.errors.title}</FormErrorMessage>
+                      </FormControl>
+                    )}
+                  </Field>
+                </Box>
+
+                <Box mt="6">
+                  <Field name="description">
+                    {({ field, form }) => (
+                      <FormControl
+                        isInvalid={
+                          form.errors.description && form.touched.description
+                        }
+                      >
+                        <FormLabel>Description</FormLabel>
+                        <Textarea {...field} />
+                        <FormErrorMessage>
+                          {form.errors.description}
+                        </FormErrorMessage>
+                      </FormControl>
+                    )}
+                  </Field>
+                </Box>
+              </Box>
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                type="submit"
+                disabled={postMutation.isLoading || putMutation.isLoading}
+                colorScheme="purple"
+                isLoading={postMutation.isLoading || putMutation.isLoading}
+                loadingText="Saving"
+                mr={3}
+              >
+                Save
+              </Button>
+            </ModalFooter>
+          </Form>
         </Formik>
-      </div>
-    </dialog>
+      </ModalContent>
+    </Modal>
   );
 };
 

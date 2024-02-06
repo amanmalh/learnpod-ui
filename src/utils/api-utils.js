@@ -2,11 +2,21 @@ import axios from "axios";
 
 const URL = "http://localhost:1337/api";
 
+export const postLogin = async ({ id, password }) => {
+  const response = await axios.post(`${URL}/auth/local`, {
+    identifier: id,
+    password,
+  });
+  return response;
+};
+
 export const getGoal = async ({ queryKey }) => {
   const [key, goalId, includeTopics] = queryKey;
   let url = `${URL}/goals/${goalId}`;
   if (includeTopics) {
-    url = url + "?populate[topics][populate][0]=owner";
+    url =
+      url +
+      "?populate[topics][populate][0]=tasks&populate[topics][populate][1]=owner";
   }
   const goal = await axios.get(url);
 

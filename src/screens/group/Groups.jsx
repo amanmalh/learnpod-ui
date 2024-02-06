@@ -4,7 +4,6 @@ import { useQuery } from "react-query";
 
 const Groups = () => {
   const groupsQuery = useQuery(["groups", true], getGroups);
-  console.log(groupsQuery);
 
   return (
     <>
