@@ -60,7 +60,7 @@ const EditGoal = ({ existingGoal, isOpen, setIsOpen }) => {
     <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>New Goal</ModalHeader>
+        <ModalHeader>{existingGoal ? "Edit Goal" : "New Goal"}</ModalHeader>
         <ModalCloseButton />
         <Formik
           initialValues={initialValues}

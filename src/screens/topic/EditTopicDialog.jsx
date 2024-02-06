@@ -17,7 +17,10 @@ import {
 } from "@chakra-ui/react";
 import { useMutation, useQueryClient } from "react-query";
 import { postTopic, putTopic } from "../../utils/api-utils";
-import { editGoalValidationSchema } from "../../utils/validationSchemas";
+import {
+  editGoalValidationSchema,
+  editTopicValidationSchema,
+} from "../../utils/validationSchemas";
 
 const EditTopicDialog = ({ goalId, existingTopic, isOpen, setIsOpen }) => {
   const client = useQueryClient();
@@ -64,7 +67,7 @@ const EditTopicDialog = ({ goalId, existingTopic, isOpen, setIsOpen }) => {
         <Formik
           initialValues={initialValues}
           onSubmit={handleSubmit}
-          validationSchema={editGoalValidationSchema}
+          validationSchema={editTopicValidationSchema}
           enableReinitialize={true}
         >
           <Form>
