@@ -15,9 +15,9 @@ import {
   FormControl,
   FormLabel,
 } from "@chakra-ui/react";
-import * as Yup from "yup";
 import { useMutation, useQueryClient } from "react-query";
 import { postTopic, putTopic } from "../../utils/api-utils";
+import { editGoalValidationSchema } from "../../utils/validationSchemas";
 
 const EditTopicDialog = ({ goalId, existingTopic, isOpen, setIsOpen }) => {
   const client = useQueryClient();
@@ -55,18 +55,6 @@ const EditTopicDialog = ({ goalId, existingTopic, isOpen, setIsOpen }) => {
     }
   };
 
-  const validationSchema = Yup.object({
-    title: Yup.string()
-      .required("Topic must have a title")
-      .min(5, "Title must have at least 5 characters")
-      .max(50, "Title can have at most 20 characters"),
-
-    description: Yup.string()
-      .required("Topic must have bio")
-      .min(5, "Bio must have at least 5 characters")
-      .max(300, "Bio can have at most 300 characters"),
-  });
-
   return (
     <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
       <ModalOverlay />
@@ -76,7 +64,7 @@ const EditTopicDialog = ({ goalId, existingTopic, isOpen, setIsOpen }) => {
         <Formik
           initialValues={initialValues}
           onSubmit={handleSubmit}
-          validationSchema={validationSchema}
+          validationSchema={editGoalValidationSchema}
           enableReinitialize={true}
         >
           <Form>
