@@ -1,13 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import {
-  Outlet,
-  Route,
-  RouterProvider,
-  Routes,
-  createBrowserRouter,
-  BrowserRouter,
-} from "react-router-dom";
+import { Outlet, Route, Routes, BrowserRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import Goal from "./screens/goal/Goal";
