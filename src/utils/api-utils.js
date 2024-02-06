@@ -2,6 +2,14 @@ import axios from "axios";
 
 const URL = "http://localhost:1337/api";
 
+export const postLogin = async ({ id, password }) => {
+  const response = await axios.post(`${URL}/auth/local`, {
+    identifier: id,
+    password,
+  });
+  return response;
+};
+
 export const getGoal = async ({ queryKey }) => {
   const [key, goalId, includeTopics] = queryKey;
   let url = `${URL}/goals/${goalId}`;

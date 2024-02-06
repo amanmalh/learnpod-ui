@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Flex,
   Spacer,
@@ -12,12 +12,21 @@ import {
   Image,
 } from "@chakra-ui/react";
 import styled from "@emotion/styled";
+import { useAuth } from "../auth/Auth";
 
 const FullWidthLink = styled(Link)`
   width: 100%;
 `;
 
 const Header = () => {
+  const navigate = useNavigate();
+  const { signout } = useAuth();
+
+  const handleLogout = () => {
+    signout();
+    navigate("/login");
+  };
+
   return (
     <>
       <Flex p="2">
@@ -41,7 +50,7 @@ const Header = () => {
               <MenuItem>
                 <FullWidthLink to="/groups">My Groups</FullWidthLink>
               </MenuItem>
-              <MenuItem>Logout</MenuItem>
+              <MenuItem onClick={handleLogout}>Logout</MenuItem>
             </MenuList>
           </Menu>
         </Box>

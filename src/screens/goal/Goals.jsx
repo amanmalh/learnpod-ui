@@ -9,7 +9,6 @@ import { useState } from "react";
 const Goals = () => {
   const goals = useQuery(["goals"], getGoals);
   const [isEditGoalDialogOpen, setIsEditGoalDialogOpen] = useState(false);
-
   const handleNewGoalClick = () => {
     setIsEditGoalDialogOpen(true);
   };
@@ -32,8 +31,8 @@ const Goals = () => {
       {goals.isSuccess && (
         <SimpleGrid columns="3" minChildWidth="400px">
           {goals.data.map((goal) => (
-            <Box w="96">
-              <GoalItem key={goal.id} goal={goal} />
+            <Box w="96" key={goal.id}>
+              <GoalItem goal={goal} />
             </Box>
           ))}
         </SimpleGrid>

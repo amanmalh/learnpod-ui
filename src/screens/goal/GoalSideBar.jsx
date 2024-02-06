@@ -26,7 +26,6 @@ export default function GoalSideBar({
   isOpen,
   setIsOpen,
 }) {
-  console.log(topic);
   return (
     <Drawer
       isOpen={isOpen}
