@@ -37,3 +37,10 @@ export const editTopicValidationSchema = Yup.object({
     .min(5, "Bio must have at least 5 characters")
     .max(300, "Bio can have at most 300 characters"),
 });
+
+export const newTaskValidationSchema = Yup.object({
+  newTask: Yup.string()
+    .required("Required")
+    .min("8", "Task must have at least 8 characters")
+    .max("100", "Task must have atmost 100 characters"),
+});

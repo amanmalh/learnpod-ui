@@ -25,7 +25,7 @@ import { useLocation } from "react-router-dom";
 export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
-  let from = "/";
+  let from = "/goals";
   if (location.state && location.state.from && location.state.from.pathname) {
     from = location.state.from.pathname;
   }
@@ -39,7 +39,9 @@ export default function Login() {
 
   const postLoginMutation = useMutation(postLogin, {
     onSuccess: (data) => {
-      updateUser(data.data.user.id, data.data.jwt);
+      const { username, email } = data.data.user;
+      const token = data.data.jwt;
+      updateUser({ username, email, token });
       navigate(from, { replace: true });
     },
   });

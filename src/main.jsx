@@ -20,7 +20,6 @@ const queryClient = new QueryClient();
 const Layout = () => {
   return (
     <>
-      <Header />
       <Container maxW="8xl">
         <Outlet />
       </Container>
@@ -30,7 +29,7 @@ const Layout = () => {
 
 function ProtectedRoutes() {
   let location = useLocation();
-  const isLoggedIn = localStorage.getItem("isLoggedIn");
+  const isLoggedIn = localStorage.getItem("user");
   if (!isLoggedIn) {
     // Redirect them to the /login page, but save the current location they were
     // trying to go to when they were redirected. This allows us to send them
@@ -39,7 +38,12 @@ function ProtectedRoutes() {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  return <Outlet />;
+  return (
+    <>
+      <Header />
+      <Outlet />
+    </>
+  );
 }
 
 ReactDOM.createRoot(document.getElementById("root")).render(
@@ -47,7 +51,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <ChakraProvider>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
-          {/* <RouterProvider router={router} /> */}
           <BrowserRouter>
             <Routes>
               <Route element={<Layout />}>
