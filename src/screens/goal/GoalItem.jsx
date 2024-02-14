@@ -6,7 +6,7 @@ export default function GoalItem({ goal }) {
 
   const openGoal = (goalId) => {
     return () => {
-      navigate(`/goal/${goalId}`);
+      navigate(`/goals/${goalId}`);
     };
   };
   return (

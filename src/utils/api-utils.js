@@ -2,11 +2,26 @@ import axios from "axios";
 
 const URL = "http://localhost:1337/api";
 
+export const setDefaultAuthToken = () => {
+  const loggedInUser = localStorage.getItem("user");
+  if (loggedInUser) {
+    const token = JSON.parse(loggedInUser).token;
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  }
+};
+
+export const removeDefaultAuthToken = () => {
+  if (axios.defaults.headers.common["Authorization"]) {
+    delete axios.defaults.headers.common["Authorization"];
+  }
+};
+
 export const postLogin = async ({ id, password }) => {
   const response = await axios.post(`${URL}/auth/local`, {
     identifier: id,
     password,
   });
+  setDefaultAuthToken();
   return response;
 };
 
@@ -88,4 +103,11 @@ export const deleteTopic = async (topicId) => {
 export const putTopic = async ({ id, body }) => {
   const topic = await axios.put(`${URL}/topics/${id}`, { data: body });
   return topic.data.data;
+};
+
+export const postTask = async ({ topicId, title }) => {
+  const newTask = await axios.post(`${URL}/tasks`, {
+    data: { topicId, title },
+  });
+  return newTask;
 };

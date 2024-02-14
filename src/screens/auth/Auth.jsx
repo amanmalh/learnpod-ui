@@ -1,27 +1,41 @@
+import { useEffect } from "react";
 import { createContext, useContext, useState } from "react";
+import {
+  removeDefaultAuthToken,
+  setDefaultAuthToken,
+} from "../../utils/api-utils";
 
 let AuthContext = createContext(null);
 
-const setToken = (token) => {
-  localStorage.setItem("isLoggedIn", true);
-  localStorage.setItem("token", token);
+const storeUserData = (user) => {
+  localStorage.setItem("user", JSON.stringify(user));
 };
 
 const clearUser = () => {
-  localStorage.removeItem("isLoggedIn");
-  localStorage.removeItem("token");
+  localStorage.removeItem("user");
 };
 
 function AuthProvider({ children }) {
   let [user, setUser] = useState(null);
 
-  const updateUser = (userId, token) => {
-    setToken(token);
-    setUser(userId);
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem("user");
+
+    if (loggedInUser) {
+      setUser(JSON.parse(loggedInUser));
+      setDefaultAuthToken();
+    }
+  }, []);
+
+  const updateUser = (user) => {
+    storeUserData(user);
+    setUser(user);
+    setDefaultAuthToken();
   };
 
   let signout = () => {
     clearUser();
+    removeDefaultAuthToken();
   };
 
   let value = { user, updateUser, signout };

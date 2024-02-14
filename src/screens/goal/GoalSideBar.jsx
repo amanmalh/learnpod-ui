@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Drawer,
   DrawerOverlay,
@@ -13,12 +13,11 @@ import {
   MenuItem,
   Icon,
   Text,
-  Box,
-  Alert,
-  AlertIcon,
-  Checkbox,
 } from "@chakra-ui/react";
 import { FaEllipsisV } from "react-icons/fa";
+import { useAuth } from "../auth/Auth";
+import TaskEditor from "../task/TaskEditor";
+import TaskViewer from "../task/TaskViewer";
 export default function GoalSideBar({
   topic,
   editTopicClickHandler,
@@ -26,6 +25,19 @@ export default function GoalSideBar({
   isOpen,
   setIsOpen,
 }) {
+  const { user } = useAuth();
+  const [isOwner, setIsOwner] = useState();
+
+  useEffect(() => {
+    if (
+      user.username === topic?.attributes?.owner?.data?.attributes?.username
+    ) {
+      setIsOwner(true);
+    } else {
+      setIsOwner(false);
+    }
+  }, [topic]);
+
   return (
     <Drawer
       isOpen={isOpen}
@@ -65,28 +77,13 @@ export default function GoalSideBar({
                 </Menu>
               </div>
             </Flex>
-            {topic.attributes.tasks.data.length === 0 && (
-              <Box mt="3">
-                <Alert status="info">
-                  <AlertIcon />
-                  No tasks present.
-                </Alert>
-              </Box>
+            {isOwner && (
+              <TaskEditor
+                topicId={topic.id}
+                tasks={topic.attributes.tasks.data}
+              />
             )}
-            {topic.attributes.tasks.data.map((task) => (
-              <Box
-                key={task.id}
-                bgColor="gray.50"
-                mt="2"
-                p="3"
-                rounded="md"
-                _hover={{ bgColor: "gray.100" }}
-              >
-                <Checkbox size="lg" colorScheme="purple">
-                  <span>{task.attributes.title}</span>
-                </Checkbox>
-              </Box>
-            ))}
+            {!isOwner && <TaskViewer tasks={topic.attributes.tasks.data} />}
           </>
         </DrawerBody>
       </DrawerContent>

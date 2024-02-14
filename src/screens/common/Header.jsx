@@ -45,7 +45,7 @@ const Header = () => {
             </MenuButton>
             <MenuList>
               <MenuItem>
-                <FullWidthLink to="/">My Goals</FullWidthLink>
+                <FullWidthLink to="/goals">My Goals</FullWidthLink>
               </MenuItem>
               <MenuItem>
                 <FullWidthLink to="/groups">My Groups</FullWidthLink>
