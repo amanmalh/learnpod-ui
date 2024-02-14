@@ -26,7 +26,7 @@ export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
   let from = "/goals";
-  if (location.state && location.state.from && location.state.from.pathname) {
+  if (location.state?.from?.pathname) {
     from = location.state.from.pathname;
   }
 
