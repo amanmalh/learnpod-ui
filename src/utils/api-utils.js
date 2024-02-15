@@ -21,7 +21,6 @@ export const postLogin = async ({ id, password }) => {
     identifier: id,
     password,
   });
-  setDefaultAuthToken();
   return response;
 };
 
@@ -29,9 +28,7 @@ export const getGoal = async ({ queryKey }) => {
   const [key, goalId, includeTopics] = queryKey;
   let url = `${URL}/goals/${goalId}`;
   if (includeTopics) {
-    url =
-      url +
-      "?populate[topics][populate][0]=tasks&populate[topics][populate][1]=owner";
+    url = url + "?populate[topics][populate][1]=owner";
   }
   const goal = await axios.get(url);
 
@@ -54,24 +51,13 @@ export const getGroups = async ({ queryKey }) => {
   return groups.data.data;
 };
 
-export const getTasks = async (topicId) => {
-  return [
-    {
-      title: "Understand knapsack problem",
-      description: "",
-      status: "complete",
-    },
-    {
-      title: "Watch youtube video",
-      description: "https://youtube.com/ire384ls",
-      status: "in_progress",
-    },
-    {
-      title: "Solve leetcode problem",
-      description: "Solve this problem: https://leetcode.com/ire384ls",
-      status: "not_started",
-    },
-  ];
+export const getTasks = async ({ queryKey }) => {
+  const [key, topic] = queryKey;
+  const url = `${URL}/tasks?filters[topic][id][$eq]=${topic.topicId}`;
+
+  const tasks = await axios.get(url);
+
+  return tasks.data.data;
 };
 
 export const postGoal = async (body) => {

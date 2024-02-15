@@ -18,6 +18,8 @@ import { FaEllipsisV } from "react-icons/fa";
 import { useAuth } from "../auth/Auth";
 import TaskEditor from "../task/TaskEditor";
 import TaskViewer from "../task/TaskViewer";
+import { useQuery } from "react-query";
+import { getTasks } from "../../utils/api-utils";
 export default function GoalSideBar({
   topic,
   editTopicClickHandler,
@@ -27,6 +29,7 @@ export default function GoalSideBar({
 }) {
   const { user } = useAuth();
   const [isOwner, setIsOwner] = useState();
+  const tasksQuery = useQuery(["tasks", { topicId: topic.id }], getTasks);
 
   useEffect(() => {
     if (
@@ -77,13 +80,12 @@ export default function GoalSideBar({
                 </Menu>
               </div>
             </Flex>
-            {isOwner && (
-              <TaskEditor
-                topicId={topic.id}
-                tasks={topic.attributes.tasks.data}
-              />
+            {tasksQuery.isSuccess && isOwner && (
+              <TaskEditor topicId={topic.id} tasks={tasksQuery.data} />
             )}
-            {!isOwner && <TaskViewer tasks={topic.attributes.tasks.data} />}
+            {tasksQuery.isSuccess && !isOwner && (
+              <TaskViewer tasks={tasksQuery.data} />
+            )}
           </>
         </DrawerBody>
       </DrawerContent>
