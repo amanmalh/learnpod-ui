@@ -10,10 +10,11 @@ import "./index.css";
 import Groups from "./screens/group/Groups";
 import { ChakraProvider, Container } from "@chakra-ui/react";
 import Login from "./screens/auth/Login";
-import { AuthProvider } from "./screens/auth/Auth";
+import { AuthProvider, useAuth } from "./screens/auth/Auth";
 import Home from "./screens/home";
 import { useLocation } from "react-router-dom";
 import { Navigate } from "react-router-dom";
+import { useContext } from "react";
 
 const queryClient = new QueryClient();
 
@@ -29,8 +30,8 @@ const Layout = () => {
 
 function ProtectedRoutes() {
   let location = useLocation();
-  const isLoggedIn = localStorage.getItem("user");
-  if (!isLoggedIn) {
+  const { user } = useAuth();
+  if (!user) {
     // Redirect them to the /login page, but save the current location they were
     // trying to go to when they were redirected. This allows us to send them
     // along to that page after they login, which is a nicer user experience

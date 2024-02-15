@@ -12,10 +12,11 @@ import {
 } from "@chakra-ui/react";
 import { Formik, Form, Field } from "formik";
 import { newTaskValidationSchema } from "../../utils/validationSchemas";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { postTask } from "../../utils/api-utils";
 
 export default function TaskEditor({ topicId, tasks }) {
+  const queryClient = useQueryClient();
   const postTaskMutation = useMutation(postTask);
   const initialValues = {
     newTask: "",
@@ -26,6 +27,7 @@ export default function TaskEditor({ topicId, tasks }) {
       {
         onSuccess: () => {
           resetForm();
+          queryClient.invalidateQueries(["tasks", { topicId }]);
           // invalidate tasks
           // show toast
         },

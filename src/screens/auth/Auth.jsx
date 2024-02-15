@@ -17,6 +17,7 @@ const clearUser = () => {
 
 function AuthProvider({ children }) {
   let [user, setUser] = useState(null);
+  let [isAuthTokenSet, setIsAuthTokenSet] = useState(false);
 
   useEffect(() => {
     const loggedInUser = localStorage.getItem("user");
@@ -25,6 +26,8 @@ function AuthProvider({ children }) {
       setUser(JSON.parse(loggedInUser));
       setDefaultAuthToken();
     }
+
+    setIsAuthTokenSet(true);
   }, []);
 
   const updateUser = (user) => {
@@ -40,7 +43,9 @@ function AuthProvider({ children }) {
 
   let value = { user, updateUser, signout };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return isAuthTokenSet ? (
+    <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+  ) : null;
 }
 
 function useAuth() {
